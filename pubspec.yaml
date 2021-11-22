@@ -47,5 +47,5 @@ flutter:
     - assets/images/note.png
     - assets/images/whiteboard.png
     - assets/images/lustopad.jpg
-    - assets/images/mapmarker.jpg
+    - assets/images/mapmarker.png
   uses-material-design: true

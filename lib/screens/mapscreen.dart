@@ -17,11 +17,20 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-@override
+  late Position currentLocation;
+  GoogleMapController? _controller;
+
+  @override
   void initState() {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((currloc) {
+      setState(() {
+        currentLocation = currloc;
+      });
+      _controller!.moveCamera(CameraUpdate.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude)));
+    });
     super.initState();
   }
-  final Completer<GoogleMapController> _controller = Completer();
 
   static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -70,79 +79,84 @@ class _MapScreenState extends State<MapScreen> {
     return await Geolocator.getCurrentPosition();
   }
 
-Future<BitmapDescriptor> createCustomMarkerBitmap(String title) async {
-  TextSpan span = TextSpan(
-    style: const TextStyle(
-      fontSize: 35.0,
-      fontWeight: FontWeight.bold,
-    ),
-    text: title,
-  );
+  Future<BitmapDescriptor> createCustomMarkerBitmap(String title) async {
+    TextSpan span = TextSpan(
+      style: const TextStyle(
+        fontSize: 35.0,
+        fontWeight: FontWeight.bold,
+      ),
+      text: title,
+    );
 
-  var bkImage = await rootBundle.load("assets/images/mapmarker.jpg");
+    var bkImage = await rootBundle.load("assets/images/mapmarker.png");
 
-  Uint8List lst = Uint8List.view(bkImage.buffer);
-  var codec = await ui.instantiateImageCodec(lst, targetHeight: 256, targetWidth: 256);
-  var frameInfo = await codec.getNextFrame();
-  var res = frameInfo.image;
+    Uint8List lst = Uint8List.view(bkImage.buffer);
+    var codec = await ui.instantiateImageCodec(lst, targetHeight: 64, targetWidth: 64);
+    var frameInfo = await codec.getNextFrame();
+    var res = frameInfo.image;
 
 
-  TextPainter tp = TextPainter(
-    text: span,
-    textAlign: TextAlign.center,
-    textDirection: TextDirection.ltr,
-  );
-  tp.text = TextSpan(
-    text: title,
-    style: const TextStyle(
-      fontSize: 35.0,
-      color: Colors.black,
-      letterSpacing: 1.0,
-      fontFamily: 'Roboto Bold',
-    ),
-  );
+    TextPainter tp = TextPainter(
+      text: span,
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+    tp.text = TextSpan(
+      text: title,
+      style: const TextStyle(
+        fontSize: 35.0,
+        color: Colors.black,
+        letterSpacing: 1.0,
+        fontFamily: 'Roboto Bold',
+      ),
+    );
 
-  PictureRecorder recorder = PictureRecorder();
-  Canvas c = Canvas(recorder);
-  c.drawImage(res, const Offset(0.0, 0.0), Paint());
+    PictureRecorder recorder = PictureRecorder();
+    Canvas c = Canvas(recorder);
+    c.drawImage(res, const Offset(0.0, 0.0), Paint());
 
-  tp.layout();
-  tp.paint(c, const Offset(30.0, 45.0));
+    tp.layout();
+    tp.paint(c, const Offset(30.0, 45.0));
 
-  /* Do your painting of the custom icon here, including drawing text, shapes, etc. */
+    /* Do your painting of the custom icon here, including drawing text, shapes, etc. */
 
-  Picture p = recorder.endRecording();
-  ByteData? pngBytes =
-  await (await p.toImage(tp.width.toInt() + 256, tp.height.toInt() + 256))
-      .toByteData(format: ImageByteFormat.png);
+    Picture p = recorder.endRecording();
+    ByteData? pngBytes =
+    await (await p.toImage(tp.width.toInt() + 64, tp.height.toInt() + 64))
+        .toByteData(format: ImageByteFormat.png);
 
-  Uint8List data = Uint8List.view(pngBytes!.buffer);
+    Uint8List data = Uint8List.view(pngBytes!.buffer);
 
-  return BitmapDescriptor.fromBytes(data);
-}
+    return BitmapDescriptor.fromBytes(data);
+  }
 
   @override
   Widget build(BuildContext context) {
     var orientation = MediaQuery.of(context).orientation;
     return FutureBuilder(
-      future: _determinePosition(),
+        future: _determinePosition(),
         builder: (context, AsyncSnapshot<Position> snapshot){
           if(snapshot.hasData){
             LatLng currentLatLng = LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
             var userCameraPosition = CameraPosition(
               target: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              zoom: 20,
+              zoom: 18.5,
             );
             return FutureBuilder(
-              future: createCustomMarkerBitmap("suck"),
+                future: createCustomMarkerBitmap(""),
                 builder: (context, snapshot) {
                   if(snapshot.hasData){
                     return GoogleMap(
-                        mapType: MapType.normal,
+                        mapType: MapType.satellite,
                         initialCameraPosition: userCameraPosition,
                         onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
+                          _controller = controller;
                         },
+                        mapToolbarEnabled: true,
+                        zoomGesturesEnabled: true,
+                        zoomControlsEnabled: false,
+                        scrollGesturesEnabled: true,
+                        myLocationButtonEnabled: true,
                         markers: {
                           Marker(markerId: const MarkerId('suck'), position: currentLatLng, icon: snapshot.data as BitmapDescriptor),
                         }
