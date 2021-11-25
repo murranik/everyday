@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/logic/models/event.dart';
+import 'package:everyday/logic/models/financemodel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -42,6 +43,14 @@ class DBProvider {
             isActive INTEGER
       )"""
           );
+          await db.execute("""
+          CREATE TABLE FinanceModels (
+            id INTEGER PRIMARY KEY,
+            label TEXT,
+            price REAL,
+            isIncome INTEGER
+      )"""
+          );
         }
     );
   }
@@ -56,6 +65,7 @@ class DBProvider {
     final db = await database;
     db!.delete("Events");
     db.delete("AlarmDatas");
+    db.delete("FinanceModels");
   }
 
   Future<void> clearDatabaseTable<T>(T type) async{
@@ -70,6 +80,8 @@ class DBProvider {
       objectsList = data.map((e) => Event.fromMap(e)).toList();
     } else if(type is AlarmData) {
       objectsList = data.map((e) => AlarmData.fromMap(e)).toList();
+    } else if(type is FinanceModel) {
+      objectsList = data.map((e) => FinanceModel.fromMap(e)).toList();
     }
     return objectsList;
   }

@@ -17,19 +17,6 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver  {
-  static void printHello() {
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          largeIcon: 'resource://drawable/logo',
-          id: 10,
-          channelKey: 'basic_channel',
-          title: 'Ало єблан у тебе пари',
-          body: 'Just a joke',
-          icon: 'resource://drawable/logo',
-        )
-    );
-  }
-
   late Future<String> permissionStatusFuture;
   final List<String> weekDays = ["пн", "вт", "ср", "чт", "пт", "сб", "нд"];
 
@@ -52,9 +39,10 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver  
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      setState(() {
-        permissionStatusFuture = getCheckNotificationPermStatus();
-      });
+      permissionStatusFuture = getCheckNotificationPermStatus();
+      if(mounted){
+        setState(() {});
+      }
     }
     super.didChangeAppLifecycleState(state);
   }

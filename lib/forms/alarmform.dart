@@ -58,20 +58,23 @@ class _AlarmFormState extends State<AlarmForm> {
   }
 
   static Future<void> printHello() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.reload();
-    var title = prefs.getString("title");
-    var id = prefs.getInt("id") ?? 10000;
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          largeIcon: 'resource://drawable/logo',
-          id: id + 1,
-          channelKey: 'basic_channel',
-          title: title,
-          body: DateTime.now().toString(),
-          icon: 'resource://drawable/logo',
-        )
-    );
+    // var prefs = await SharedPreferences.getInstance();
+    // await prefs.reload();
+    // var title = prefs.getString("title");
+    // var id = prefs.getInt("id") ?? 10000;
+    // for(var i = 0; i < 5; i++){
+    //   AwesomeNotifications().createNotification(
+    //       content: NotificationContent(
+    //         largeIcon: 'resource://drawable/logo',
+    //         id: i + 1,
+    //         channelKey: 'basic_channel',
+    //         title: i.toString(),
+    //         body: DateTime.now().toString(),
+    //         icon: 'resource://drawable/logo',
+    //       )
+    //   );
+    //   await Future.delayed(const Duration(seconds: 10));
+    // }
   }
 
   String buildRangeOfDateForRepeatString(){

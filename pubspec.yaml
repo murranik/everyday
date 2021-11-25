@@ -48,4 +48,6 @@ flutter:
     - assets/images/whiteboard.png
     - assets/images/lustopad.jpg
     - assets/images/mapmarker.png
+    - assets/images/money-bag.png
+    - assets/images/budget.png
   uses-material-design: true

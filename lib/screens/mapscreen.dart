@@ -49,9 +49,6 @@ class _MapScreenState extends State<MapScreen> {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -59,23 +56,14 @@ class _MapScreenState extends State<MapScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
 
@@ -95,34 +83,13 @@ class _MapScreenState extends State<MapScreen> {
     var frameInfo = await codec.getNextFrame();
     var res = frameInfo.image;
 
-
-    TextPainter tp = TextPainter(
-      text: span,
-      textAlign: TextAlign.center,
-      textDirection: TextDirection.ltr,
-    );
-    tp.text = TextSpan(
-      text: title,
-      style: const TextStyle(
-        fontSize: 35.0,
-        color: Colors.black,
-        letterSpacing: 1.0,
-        fontFamily: 'Roboto Bold',
-      ),
-    );
-
     PictureRecorder recorder = PictureRecorder();
     Canvas c = Canvas(recorder);
     c.drawImage(res, const Offset(0.0, 0.0), Paint());
 
-    tp.layout();
-    tp.paint(c, const Offset(30.0, 45.0));
-
-    /* Do your painting of the custom icon here, including drawing text, shapes, etc. */
-
     Picture p = recorder.endRecording();
     ByteData? pngBytes =
-    await (await p.toImage(tp.width.toInt() + 64, tp.height.toInt() + 64))
+    await (await p.toImage(64, 64))
         .toByteData(format: ImageByteFormat.png);
 
     Uint8List data = Uint8List.view(pngBytes!.buffer);

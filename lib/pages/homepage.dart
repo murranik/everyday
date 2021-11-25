@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:everyday/dialogs/financedialog.dart';
 import 'package:everyday/forms/alarmform.dart';
 import 'package:everyday/logic/database.dart';
 import 'package:everyday/logic/models/alarm.dart';
