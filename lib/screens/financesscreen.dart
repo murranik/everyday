@@ -26,14 +26,23 @@ class _FinancesScreenState extends State<FinancesScreen> {
     return finances;
   }
 
-  void addFinanceModelToList(FinanceModel financeModel){
-    if(financeModel.isIncome == 0){
-      notIncomeFinances.removeWhere((element) => element.id == financeModel.id);
-      notIncomeFinances.add(financeModel);
+  void addFinanceModelToList(FinanceModel financeModel, {required bool toDelete}){
+    if(!toDelete){
+      if(financeModel.isIncome == 0){
+        notIncomeFinances.removeWhere((element) => element.id == financeModel.id);
+        notIncomeFinances.add(financeModel);
+      } else {
+        incomeFinances.removeWhere((element) => element.id == financeModel.id);
+        incomeFinances.add(financeModel);
+      }
     } else {
-      incomeFinances.removeWhere((element) => element.id == financeModel.id);
-      incomeFinances.add(financeModel);
+      if(financeModel.isIncome == 0){
+        notIncomeFinances.removeWhere((element) => element.id == financeModel.id);
+      } else {
+        incomeFinances.removeWhere((element) => element.id == financeModel.id);
+      }
     }
+
     setState(() {});
   }
 
@@ -63,72 +72,149 @@ class _FinancesScreenState extends State<FinancesScreen> {
                           colorMode: 1,
                           blockName: 'Доходи',
                           onTap: () async {
-                            await DBProvider.db.upsertModel(FinanceModel(price: 200.0, isIncome: 1));
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                context: context,
+                                builder: (builder){
+                                  return Container(
+                                      color: Colors.transparent,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: FinanceDialog(
+                                          financeModel: FinanceModel(price: 0, isIncome: 1),
+                                          update: addFinanceModelToList,
+                                        ),
+                                      )
+                                  );
+                                }
+                            );
                             setState(() {});
                           },
                           children: [
-                            ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: dataListForIncomeFinances.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                                          context: context,
-                                          builder: (builder){
-                                            return Container(
-                                                height: 350.0,
-                                                color: Colors.transparent, //could change this to Color(0xFF737373),
-                                                //so you don't have to change MaterialApp canvasColor
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(10)
-                                                  ),
-                                                  child: FinanceDialog(
-                                                    financeModel: dataListForIncomeFinances[index],
-                                                  ),
-                                                )
-                                            );
-                                          }
-                                      );
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(dataListForIncomeFinances[index].label ?? "Без названия", style: TextStyle(fontSize: 12.sp),),
-                                        Text(dataListForIncomeFinances[index].price.toStringAsFixed(2), style: TextStyle(fontSize: 12.sp),),
-                                      ],
-                                    ),
-                                  );
-                                }
-                            )
+                            if(dataListForIncomeFinances.isNotEmpty)
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: dataListForIncomeFinances.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                            context: context,
+                                            builder: (builder){
+                                              return Container(
+                                                  color: Colors.transparent, //could change this to Color(0xFF737373),
+                                                  //so you don't have to change MaterialApp canvasColor
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(10)
+                                                    ),
+                                                    child: FinanceDialog(
+                                                      financeModel: dataListForIncomeFinances[index],
+                                                      update: addFinanceModelToList,
+                                                    ),
+                                                  )
+                                              );
+                                            }
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(dataListForIncomeFinances[index].label ?? "Без назви", style: TextStyle(fontSize: 12.sp),),
+                                          Text(dataListForIncomeFinances[index].price.toStringAsFixed(2), style: TextStyle(fontSize: 12.sp),),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                              )
+                            else
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: const Text("Доходи відсутні"),
+                              )
                           ],
                         ),
                         DecoratedContainer(
                           colorMode: 2,
                           blockName: 'Витрати',
                           onTap: () async {
-                            await DBProvider.db.upsertModel(FinanceModel(price: 228.0, isIncome: 0));
+                            await showModalBottomSheet(
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                context: context,
+                                builder: (builder){
+                                  return Container(
+                                      color: Colors.transparent, //could change this to Color(0xFF737373),
+                                      //so you don't have to change MaterialApp canvasColor
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: FinanceDialog(
+                                          financeModel: FinanceModel(price: 0, isIncome: 0),
+                                          update: addFinanceModelToList,
+                                        ),
+                                      )
+                                  );
+                                }
+                            );
                             setState(() {});
                           },
                           children: [
-                            ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: dataListForNotIncomeFinances.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(dataListForNotIncomeFinances[index].label ?? "Без названия", style: TextStyle(fontSize: 12.sp),),
-                                      Text(dataListForNotIncomeFinances[index].price.toStringAsFixed(2), style: TextStyle(fontSize: 12.sp),),
-                                    ],
-                                  );
-                                }
-                            )
+                            if(dataListForNotIncomeFinances.isNotEmpty)
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: dataListForNotIncomeFinances.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                              context: context,
+                                              builder: (builder){
+                                                return Container(
+                                                    color: Colors.transparent, //could change this to Color(0xFF737373),
+                                                    //so you don't have to change MaterialApp canvasColor
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                      child: FinanceDialog(
+                                                        financeModel: dataListForNotIncomeFinances[index],
+                                                        update: addFinanceModelToList,
+                                                      ),
+                                                    )
+                                                );
+                                              }
+                                          );
+                                        },
+                                        child:  Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(dataListForNotIncomeFinances[index].label ?? "Без назви", style: TextStyle(fontSize: 12.sp),),
+                                            Text(dataListForNotIncomeFinances[index].price.toStringAsFixed(2), style: TextStyle(fontSize: 12.sp),),
+                                          ],
+                                        )
+                                    );
+                                  }
+                              )
+                            else
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: const Text("Витрати відсутні"),
+                              )
                           ],
                         ),
                         DecoratedContainer(
@@ -139,7 +225,6 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                 builder: (context) {
                                   var income = incomeFinances.fold(0, (previousValue, element) => element.price);
                                   var notIncome = notIncomeFinances.fold(0, (previousValue, element) => element.price);
-
                                   return Text("${income - notIncome} ", style: TextStyle(fontSize: 14.sp),);
                                 }
                             )

@@ -300,7 +300,7 @@ class _EventFormState extends State<EventForm> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25),
                                     border: Border.all(
-                                        color: Color(0xff2a9863),
+                                        color: const Color(0xff2a9863),
                                         style: BorderStyle.solid
                                     )
                                 ),
