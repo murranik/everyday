@@ -21,6 +21,7 @@ dependencies:
   awesome_notifications: any
   notification_permissions: 0.6.1
   flutter_time_picker_spinner: 2.0.0
+  extended_masked_text: 2.3.1
   firebase_messaging:
   flutter_emoji:
   sqflite: 2.0.0+4

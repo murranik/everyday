@@ -5,7 +5,7 @@ import 'package:everyday/logic/database.dart';
 import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/screens/alarmscreen.dart';
 import 'package:everyday/screens/calendarscreen.dart';
-import 'package:everyday/screens/financesscreen.dart';
+import 'package:everyday/screens/finances/financesscreen.dart';
 import 'package:everyday/screens/mapscreen.dart';
 import 'package:everyday/screens/organizerscreen.dart';
 import 'package:everyday/views/alarmview.dart';

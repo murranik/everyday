@@ -58,8 +58,9 @@ class _FinanceDialogsState extends State<FinanceDialog> {
           SizedBox(height: 1.5.h,),
           TextField(
             controller: priceController,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Витрати",
+              labelText: "Сумма",
               hintText: "0.0",
               labelStyle: TextStyle(fontSize: 12.sp, color: Colors.black),
               focusedBorder: OutlineInputBorder(
