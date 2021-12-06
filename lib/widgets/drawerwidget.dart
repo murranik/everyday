@@ -51,7 +51,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             SizedBox(
               height: 2.h,
             ),
-            iconButtonWithText("Фінаси", "assets/images/whiteboard.png", "Finances"),
+            iconButtonWithText("Фінанси", "assets/images/whiteboard.png", "Finances"),
             SizedBox(
               height: 2.h,
             ),

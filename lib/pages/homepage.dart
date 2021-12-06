@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       case "Alarm": {title = "Будильник"; pageName = "Alarm";} break;
       case "Organizer": {title = "Органайзер"; pageName = "Organizer";} break;
       case "Calendar": {title = "Календар"; pageName = "Calendar";} break;
-      case "Finances": {title = "Фінаси"; pageName = "Finances";} break;
+      case "Finances": {title = "Фінанси"; pageName = "Finances";} break;
       case "Map": {title = "Карта"; pageName = "Map";} break;
       default: {title = "Будильник"; pageName = "Alarm";}
     }
