@@ -32,14 +32,10 @@ class _AllFinancesScreenState extends State<AllFinancesScreen> {
           title: Text(widget.title),
         ),
         body: widget.finances.isNotEmpty
-            ? GridView.builder(
+            ? ListView.builder(
           padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 1.h),
           itemCount: widget.finances.length,
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              crossAxisSpacing: 2.w
-          ),
           itemBuilder: (BuildContext context, int index) {
             var element = widget.finances[index];
             return GestureDetector(
@@ -66,38 +62,37 @@ class _AllFinancesScreenState extends State<AllFinancesScreen> {
                 );
                 setState(() {});
               },
-              child: Container(
-                  padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(26)
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                    element.label!
-                                ),
-                              ),
-                              SizedBox(height: 1.h,),
-                              Expanded(
-                                child: Text(
-                                  element.price.toString(),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                              )
-                            ],
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(26)
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            flex: 80,
+                            child: Text(
+                                element.label!
+                            ),
+                          ),
+                          SizedBox(height: 1.h,),
+                          Expanded(
+                            flex: 20,
+                            child: Text(
+                              element.price.toString(),
+                              textDirection: TextDirection.rtl,
+                            ),
                           )
-                      )
-                    ],
-                  )
-              ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 1.h,),
+                  ],
+                )
             );
           },
 
