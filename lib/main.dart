@@ -14,6 +14,11 @@ import 'package:sizer/sizer.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
+  var prefs = await SharedPreferences.getInstance();
+  var list = prefs.getStringList("ids");
+  if(list == null){
+    prefs.setStringList("ids", []);
+  }
   AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
       'resource://drawable/logo',

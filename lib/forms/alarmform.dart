@@ -52,29 +52,74 @@ class _AlarmFormState extends State<AlarmForm> {
 
   void savePickedDate(DateTime dateTime){
     date = dateTime;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-  static Future<void> printHello() async {
-    // var prefs = await SharedPreferences.getInstance();
-    // await prefs.reload();
-    // var title = prefs.getString("title");
-    // var id = prefs.getInt("id") ?? 10000;
-    // for(var i = 0; i < 5; i++){
-    //   AwesomeNotifications().createNotification(
-    //       content: NotificationContent(
-    //         largeIcon: 'resource://drawable/logo',
-    //         id: i + 1,
-    //         channelKey: 'basic_channel',
-    //         title: i.toString(),
-    //         body: DateTime.now().toString(),
-    //         icon: 'resource://drawable/logo',
-    //       )
-    //   );
-    //   await Future.delayed(const Duration(seconds: 10));
-    // }
+  static Future<void> sendOneTimeAlarm() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+    var listOfAlarms = prefs.getStringList("ids");
+    String id;
+    if(listOfAlarms!.isNotEmpty){
+      id = listOfAlarms.first;
+      var alarm = await DBProvider.db.getModelById(int.parse(id), AlarmData(label: "")) as AlarmData;
+
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            largeIcon: 'resource://drawable/logo',
+            id: alarm.id!,
+            channelKey: 'basic_channel',
+            title: alarm.label.toString(),
+            body: '',
+            icon: 'resource://drawable/logo',
+          )
+      );
+
+      listOfAlarms.removeAt(0);
+      prefs.setStringList("ids", listOfAlarms);
+      alarm.isActive = 0;
+      DBProvider.db.upsertModel(alarm);
+    }
+  }
+
+  static Future<void> sendPeriodicAlarm(int id) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+    var title = prefs.getString("title");
+    var id = prefs.getInt("id") ?? 10000;
+
+    var alarm = await DBProvider.db.getModelById(id, AlarmData(label: "")) as AlarmData;
+
+    var listOfDates = alarm.rangeOfDateForRepeat!.split('/');
+    List<int> weekDaysList = [];
+    for(var date in listOfDates){
+      switch(date){
+        case "пн": weekDaysList.add(1) ;break;
+        case "вт": weekDaysList.add(2) ;break;
+        case "ср": weekDaysList.add(3) ;break;
+        case "чт": weekDaysList.add(4) ;break;
+        case "пт": weekDaysList.add(5) ;break;
+        case "сб": weekDaysList.add(6) ;break;
+        case "нд": weekDaysList.add(7) ;break;
+      }
+    }
+
+    for(var weekDay in weekDaysList){
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            largeIcon: 'resource://drawable/logo',
+            id: id,
+            channelKey: 'basic_channel',
+            title: title.toString(),
+            body: '',
+            icon: 'resource://drawable/logo',
+          ),
+          schedule: NotificationCalendar(
+              weekday: weekDay,
+              repeats: true
+          )
+      );
+    }
   }
 
   String buildRangeOfDateForRepeatString(){
@@ -132,12 +177,17 @@ class _AlarmFormState extends State<AlarmForm> {
                     }
                     if(widget.toCreate){
                       var prefs = await SharedPreferences.getInstance();
-                      prefs.remove("title");
-                      prefs.remove("id");
-                      await prefs.setString("title", alarm.label);
-                      await prefs.setInt("id", alarm.id!);
-                      const int helloAlarmID = 0;
-                      await AndroidAlarmManager.oneShotAt(date, helloAlarmID, printHello, alarmClock: true, exact: true, wakeup: true);
+
+                      var listOfAlarms = prefs.getStringList("ids");
+                      listOfAlarms!.add("${alarm.id}");
+                      prefs.setStringList("ids", listOfAlarms);
+
+                      final int helloAlarmID = res.id;
+                      if(alarm.rangeOfDateForRepeat != null) {
+                        await AndroidAlarmManager.oneShotAt(date, helloAlarmID, sendOneTimeAlarm, exact: true, wakeup: true);
+                      } else {
+
+                      }
                     }
                     Navigator.of(context).pop();
                   },

@@ -87,7 +87,6 @@ class DBProvider {
   }
 
   Future<void> deleteModels<T>(T type) async{
-
     final db = await database;
     db!.delete(getTableNameFromType(type));
   }
