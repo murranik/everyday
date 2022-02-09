@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:everyday/dialogs/financedialog.dart';
 import 'package:everyday/forms/alarmform.dart';
 import 'package:everyday/logic/database.dart';
@@ -24,30 +23,62 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   String title = "Будильник";
   String pageName = "Alarm";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-
   }
 
-  void getPage(){
+  void getPage() {
     var pagesView = Provider.of<PagesView>(context, listen: false);
-    switch(pagesView.pageName){
-      case "Home": {title = "Головна"; pageName = "Home";} break;
-      case "Alarm": {title = "Будильник"; pageName = "Alarm";} break;
-      case "Organizer": {title = "Органайзер"; pageName = "Organizer";} break;
-      case "Calendar": {title = "Календар"; pageName = "Calendar";} break;
-      case "Finances": {title = "Фінанси"; pageName = "Finances";} break;
-      case "Map": {title = "Карта"; pageName = "Map";} break;
-      default: {title = "Будильник"; pageName = "Alarm";}
+    switch (pagesView.pageName) {
+      case "Home":
+        {
+          title = "Головна";
+          pageName = "Home";
+        }
+        break;
+      case "Alarm":
+        {
+          title = "Будильник";
+          pageName = "Alarm";
+        }
+        break;
+      case "Organizer":
+        {
+          title = "Органайзер";
+          pageName = "Organizer";
+        }
+        break;
+      case "Calendar":
+        {
+          title = "Календар";
+          pageName = "Calendar";
+        }
+        break;
+      case "Finances":
+        {
+          title = "Фінанси";
+          pageName = "Finances";
+        }
+        break;
+      case "Map":
+        {
+          title = "Карта";
+          pageName = "Map";
+        }
+        break;
+      default:
+        {
+          title = "Будильник";
+          pageName = "Alarm";
+        }
     }
   }
 
-  void update(){
+  void update() {
     setState(() {});
   }
 
@@ -58,56 +89,54 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         drawer: SafeArea(
           child: Drawer(
-              child: DrawerWidget(update: update,)
-          ),
+              child: DrawerWidget(
+            update: update,
+          )),
         ),
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: const Color(0xff2a9863),
+          backgroundColor: const Color(0xffc9e7f2),
           title: Text(title),
           actions: [
-            if(pageName == "Alarm")
+            if (pageName == "Alarm")
               MaterialButton(
-                color: const Color(0xff2a9863),
+                color: const Color(0xffc9e7f2),
                 onPressed: () async {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => AlarmForm(
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AlarmForm(
                             toCreate: true,
                             alarmData: AlarmData(label: ''),
-                          )
-                      )
-                  );
+                          )));
                 },
-                child: Icon(Icons.add, color: Colors.white, size: 30.sp,),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 30.sp,
+                ),
               ),
           ],
         ),
-        body: Builder(
-            builder: (context) {
-          if(pageName == "Home") {
+        body: Builder(builder: (context) {
+          if (pageName == "Home") {
             return Container(
-                color: const Color(0xff2a9863),
+                color: const Color(0xffc9e7f2),
                 child: const Center(
                   child: Text('hello'),
-                )
-            );
-          } else if(pageName == "Alarm"){
+                ));
+          } else if (pageName == "Alarm") {
             return const AlarmScreen();
-          } else if(pageName == "Organizer"){
+          } else if (pageName == "Organizer") {
             return const OrganizerScreen();
-          } else if(pageName == "Calendar"){
+          } else if (pageName == "Calendar") {
             return const CalendarScreen();
-          }  else if(pageName == "Finances"){
+          } else if (pageName == "Finances") {
             return const FinancesScreen();
-          } else if(pageName == "Map"){
+          } else if (pageName == "Map") {
             return const MapScreen();
           } else {
             return const Text("error");
           }
-        }
-        )
-    );
+        }));
   }
 
   @override

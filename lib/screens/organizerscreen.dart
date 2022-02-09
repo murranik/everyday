@@ -26,7 +26,7 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
     setState(() {});
   }
 
-  void addEventToList(Event event){
+  void addEventToList(Event event) {
     events.removeWhere((element) => element.id == event.id);
     events.add(event);
     setState(() {});
@@ -42,47 +42,52 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             MaterialButton(
-              color: const Color(0xff2a9863),
+              color: const Color(0xffc9e7f2),
               onPressed: () async {
-                Navigator.of(context).push(
-                    MaterialPageRoute(
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
                         builder: (context) => EventForm(
-                          event: Event(label: ""),
-                          addEventToList: addEventToList,
-                          toCreate: true,
-                        )
-                    )
-                ).then((value) {
+                              event: Event(label: ""),
+                              addEventToList: addEventToList,
+                              toCreate: true,
+                            )))
+                    .then((value) {
                   setState(() {});
-                }
-                );
+                });
               },
               child: const Text("Додати подію"),
             ),
             MaterialButton(
-              color: const Color(0xff2a9863),
+              color: const Color(0xffc9e7f2),
               onPressed: () async {
                 await DBProvider.db.clearDatabase();
                 events.clear();
-                setState(() {
-
-                });
+                setState(() {});
               },
               child: const Text("Видалити всі події"),
             ),
           ],
         ),
-        Divider(thickness: 2.sp,),
-        SizedBox(height: orientation == Orientation.portrait  ? 1.h : 1.w,),
+        Divider(
+          thickness: 2.sp,
+        ),
+        SizedBox(
+          height: orientation == Orientation.portrait ? 1.h : 1.w,
+        ),
         Expanded(
           child: ListView(
             children: [
-              for(var element in events)
+              for (var element in events)
                 Dismissible(
                   key: UniqueKey(),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventForm(event: element, toCreate: false, addEventToList: addEventToList,)));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EventForm(
+                                event: element,
+                                toCreate: false,
+                                addEventToList: addEventToList,
+                              )));
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,41 +97,49 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(26)
-                          ),
+                              borderRadius: BorderRadius.circular(26)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
                                   child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                              intl.DateFormat.yMd().format(DateTime.parse(element.startDate!)) + " в " + intl.DateFormat.Hm().format(DateTime.parse(element.startDate!))
-                                          ),
-                                        ],
+                                      Text(intl.DateFormat.yMd().format(
+                                              DateTime.parse(
+                                                  element.startDate!)) +
+                                          " в " +
+                                          intl.DateFormat.Hm().format(
+                                              DateTime.parse(
+                                                  element.startDate!))),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 4.w,
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(width: 4.w,),
-                                          Expanded(
-                                            child: Text(
-                                                element.label
-                                            ),
-                                          ),
-                                          SizedBox(width: 4.w,),
-                                        ],
-                                      )
+                                      Expanded(
+                                        child: Text(element.label),
+                                      ),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
                                     ],
                                   )
-                              )
+                                ],
+                              ))
                             ],
                           ),
                         ),
-                        SizedBox(height: orientation == Orientation.portrait  ? 1.w : 1.h,)
+                        SizedBox(
+                          height:
+                              orientation == Orientation.portrait ? 1.w : 1.h,
+                        )
                       ],
                     ),
                   ),
@@ -139,14 +152,7 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
                     color: Colors.red,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                            "Видалити"
-                        ),
-                        Text(
-                            "Видалити"
-                        )
-                      ],
+                      children: const [Text("Видалити"), Text("Видалити")],
                     ),
                   ),
                 )
@@ -156,5 +162,4 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
       ],
     );
   }
-
 }

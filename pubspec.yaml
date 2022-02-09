@@ -11,14 +11,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  syncfusion_flutter_calendar: 19.3.47
+  syncfusion_flutter_calendar: 19.4.50
   sizer:
   provider: ^5.0.0
   permission_handler: 8.2.5
   android_alarm_manager_plus: 2.0.3
   google_maps_flutter:
   shared_preferences: 2.0.8
-  awesome_notifications: any
   notification_permissions: 0.6.1
   flutter_time_picker_spinner: 2.0.0
   extended_masked_text: 2.3.1
@@ -28,7 +27,7 @@ dependencies:
   geolocator: 7.7.1
   date_time_picker: 2.1.0
   path_provider: 2.0.6
-  syncfusion_flutter_datepicker: 19.3.48
+  syncfusion_flutter_datepicker: 19.4.50
   flex_color_picker: 2.1.2
   flutter_localizations:
     sdk: flutter
