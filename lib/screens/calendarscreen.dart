@@ -49,6 +49,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             cellBorderColor: Colors.black,
             allowViewNavigation: false,
             view: CalendarView.month,
+            initialSelectedDate: DateTime.now(),
             allowAppointmentResize: true,
             dataSource: AppointmentDataSource(_getDataSource()),
             monthViewSettings: const MonthViewSettings(
@@ -58,92 +59,97 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             appointmentBuilder:
                 (BuildContext context, CalendarAppointmentDetails details) {
-              final AppointmentExtend meeting = details.appointments.first;
+              if (details.appointments.isNotEmpty) {
+                final AppointmentExtend meeting = details.appointments.first;
 
-              return GestureDetector(
-                  onTap: () async {
-                    var event = await DBProvider.db
-                        .getModelById(meeting.eventId, Event(label: ""));
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EventForm(
-                              toCreate: false,
-                              event: event,
-                              onReturnToCalendar: onGoBack,
-                            )));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: meeting.color,
-                      border: Border.all(color: Colors.black, width: 0.0),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
+                return GestureDetector(
+                    onTap: () async {
+                      var event = await DBProvider.db
+                          .getModelById(meeting.eventId, Event(label: ""));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EventForm(
+                                toCreate: false,
+                                event: event,
+                                onReturnToCalendar: onGoBack,
+                              )));
+                    },
                     child: Container(
-                      padding: EdgeInsets.only(left: 4.w),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  meeting.subject +
-                                      (intl.DateFormat.yMd()
-                                                  .format(meeting.startTime) !=
-                                              intl.DateFormat.yMd()
-                                                  .format(meeting.endTime)
-                                          ? " день ${details.date.day - meeting.startTime.day + 1}"
-                                          : ""),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                flex: 4,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  (intl.DateFormat.yMd()
-                                              .format(meeting.startTime) ==
-                                          intl.DateFormat.yMd()
-                                              .format(meeting.endTime)
-                                      ? ""
-                                      : intl.DateFormat.yMd()
-                                              .format(meeting.startTime) +
-                                          " - " +
-                                          intl.DateFormat.yMd()
-                                              .format(meeting.endTime)),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                flex: intl.DateFormat.yMd()
-                                            .format(meeting.startTime) ==
-                                        intl.DateFormat.yMd()
-                                            .format(meeting.endTime)
-                                    ? 0
-                                    : 2,
-                              )
-                            ],
-                          ),
-                          if (intl.DateFormat.yMd().format(meeting.startTime) ==
-                              intl.DateFormat.yMd().format(meeting.endTime))
+                      decoration: BoxDecoration(
+                        color: meeting.color,
+                        border: Border.all(color: Colors.black, width: 0.0),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.only(left: 4.w),
+                        child: Column(
+                          children: [
                             Row(
                               children: [
-                                Text(
-                                  intl.DateFormat.Hm()
-                                              .format(meeting.startTime) ==
-                                          intl.DateFormat.Hm()
-                                              .format(meeting.endTime)
-                                      ? "В " +
-                                          intl.DateFormat.Hm()
-                                              .format(meeting.startTime)
-                                      : intl.DateFormat.Hm()
-                                              .format(meeting.startTime) +
-                                          " - " +
-                                          intl.DateFormat.Hm()
-                                              .format(meeting.endTime),
-                                  overflow: TextOverflow.ellipsis,
+                                Expanded(
+                                  child: Text(
+                                    meeting.subject +
+                                        (intl.DateFormat.yMd().format(
+                                                    meeting.startTime) !=
+                                                intl.DateFormat.yMd()
+                                                    .format(meeting.endTime)
+                                            ? " день ${details.date.day - meeting.startTime.day + 1}"
+                                            : ""),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  flex: 4,
                                 ),
+                                Expanded(
+                                  child: Text(
+                                    (intl.DateFormat.yMd()
+                                                .format(meeting.startTime) ==
+                                            intl.DateFormat.yMd()
+                                                .format(meeting.endTime)
+                                        ? ""
+                                        : intl.DateFormat.yMd()
+                                                .format(meeting.startTime) +
+                                            " - " +
+                                            intl.DateFormat.yMd()
+                                                .format(meeting.endTime)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  flex: intl.DateFormat.yMd()
+                                              .format(meeting.startTime) ==
+                                          intl.DateFormat.yMd()
+                                              .format(meeting.endTime)
+                                      ? 0
+                                      : 2,
+                                )
                               ],
-                            )
-                        ],
+                            ),
+                            if (intl.DateFormat.yMd()
+                                    .format(meeting.startTime) ==
+                                intl.DateFormat.yMd().format(meeting.endTime))
+                              Row(
+                                children: [
+                                  Text(
+                                    intl.DateFormat.Hm()
+                                                .format(meeting.startTime) ==
+                                            intl.DateFormat.Hm()
+                                                .format(meeting.endTime)
+                                        ? "В " +
+                                            intl.DateFormat.Hm()
+                                                .format(meeting.startTime)
+                                        : intl.DateFormat.Hm()
+                                                .format(meeting.startTime) +
+                                            " - " +
+                                            intl.DateFormat.Hm()
+                                                .format(meeting.endTime),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              )
+                          ],
+                        ),
                       ),
-                    ),
-                  ));
+                    ));
+              } else {
+                return Text("Немає івентів");
+              }
             },
           ),
         )

@@ -338,7 +338,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                               child: const Text(
                                                 "Відмінити",
                                                 style: TextStyle(
-                                                  color: Color(0xffc9e7f2),
+                                                  color: Colors.black,
                                                 ),
                                               )),
                                           OutlinedButton(
@@ -349,7 +349,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                               child: const Text(
                                                 "Зберегти",
                                                 style: TextStyle(
-                                                  color: Color(0xffc9e7f2),
+                                                  color: Colors.black,
                                                 ),
                                               ))
                                         ],
