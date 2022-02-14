@@ -300,10 +300,10 @@ class _AlarmFormState extends State<AlarmForm> {
                     scale: 1.5,
                     child: TimePickerSpinner(
                       is24HourMode: true,
-                      normalTextStyle:
-                          const TextStyle(fontSize: 24, color: Colors.black),
-                      highlightedTextStyle: const TextStyle(
+                      normalTextStyle: const TextStyle(
                           fontSize: 24, color: Color(0xffc9e7f2)),
+                      highlightedTextStyle:
+                          const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
                       itemHeight: 5.h,
                       isForce2Digits: true,
@@ -429,10 +429,10 @@ class _AlarmFormState extends State<AlarmForm> {
                     scale: 1.7,
                     child: TimePickerSpinner(
                       is24HourMode: true,
-                      normalTextStyle:
-                          const TextStyle(fontSize: 24, color: Colors.black),
-                      highlightedTextStyle: const TextStyle(
+                      normalTextStyle: const TextStyle(
                           fontSize: 24, color: Color(0xffc9e7f2)),
+                      highlightedTextStyle:
+                          const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
                       itemHeight: 5.h,
                       isForce2Digits: true,
