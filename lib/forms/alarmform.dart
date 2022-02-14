@@ -126,8 +126,7 @@ class _AlarmFormState extends State<AlarmForm> {
   @override
   Widget build(BuildContext context) {
     var orientation = MediaQuery.of(context).orientation;
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: const Color(0xffc9e7f2),
@@ -301,7 +300,7 @@ class _AlarmFormState extends State<AlarmForm> {
                     child: TimePickerSpinner(
                       is24HourMode: true,
                       normalTextStyle: const TextStyle(
-                          fontSize: 24, color: Color(0xffc9e7f2)),
+                          fontSize: 24, color: Color.fromARGB(164, 0, 0, 0)),
                       highlightedTextStyle:
                           const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
@@ -430,7 +429,7 @@ class _AlarmFormState extends State<AlarmForm> {
                     child: TimePickerSpinner(
                       is24HourMode: true,
                       normalTextStyle: const TextStyle(
-                          fontSize: 24, color: Color(0xffc9e7f2)),
+                          fontSize: 24, color: Color.fromARGB(164, 0, 0, 0)),
                       highlightedTextStyle:
                           const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
@@ -446,6 +445,6 @@ class _AlarmFormState extends State<AlarmForm> {
                 ],
               ),
             )),
-    ));
+    );
   }
 }

@@ -87,12 +87,10 @@ class _HomePageState extends State<HomePage> {
     var orientation = MediaQuery.of(context).orientation;
     getPage();
     return Scaffold(
-        drawer: SafeArea(
-          child: Drawer(
-              child: DrawerWidget(
-            update: update,
-          )),
-        ),
+        drawer: Drawer(
+            child: DrawerWidget(
+          update: update,
+        )),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color(0xffc9e7f2),
