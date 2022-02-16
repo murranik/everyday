@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceView with ChangeNotifier {
-  static late int? _alarmId = 0;
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  static Future init() async {
+  static Future init(_flutterLocalNotificationsPlugin) async {
+    flutterLocalNotificationsPlugin = _flutterLocalNotificationsPlugin;
     final prefs = await SharedPreferences.getInstance();
-    _alarmId = prefs.getInt('alarmId');
-    if (_alarmId == null) {
-      prefs.setInt('alarmId', 0);
-      _alarmId = 0;
+    final list = prefs.getStringList('alarmsIdsList');
+    if (list == null) {
+      prefs.setStringList('alarmsIdsList', []);
     }
   }
 
   static Future getAlarmId() async {
     final prefs = await SharedPreferences.getInstance();
-    _alarmId = _alarmId! + 1;
-    prefs.setInt('alarmId', _alarmId!);
-    return _alarmId;
+    final list = prefs.getStringList('alarmsIdsList');
+    return list!.length + 1;
   }
 }

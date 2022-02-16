@@ -11,12 +11,15 @@ import 'package:everyday/views/alarmview.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/widgets/drawerwidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  const HomePage({Key? key, required this.flutterLocalNotificationsPlugin})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -122,7 +125,10 @@ class _HomePageState extends State<HomePage> {
                   child: Text('hello'),
                 ));
           } else if (pageName == "Alarm") {
-            return const AlarmScreen();
+            return AlarmScreen(
+              flutterLocalNotificationsPlugin:
+                  widget.flutterLocalNotificationsPlugin,
+            );
           } else if (pageName == "Organizer") {
             return const OrganizerScreen();
           } else if (pageName == "Calendar") {

@@ -4,13 +4,16 @@ import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/views/alarmview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class AlarmScreen extends StatefulWidget {
-  const AlarmScreen({Key? key}) : super(key: key);
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  const AlarmScreen({Key? key, required this.flutterLocalNotificationsPlugin})
+      : super(key: key);
   @override
   State<StatefulWidget> createState() => _AlarmScreenState();
 }

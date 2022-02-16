@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:everyday/pages/homepage.dart';
 import 'package:everyday/views/alarmview.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/views/preferenceview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart' as tz;
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +26,15 @@ void main() async {
     prefs.setStringList("ids", []);
   }
 
-  await PreferenceView.init();
+  await PreferenceView.init(flutterLocalNotificationsPlugin);
+  final String currentTimeZone =
+      await tz.FlutterNativeTimezone.getLocalTimezone();
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('logo');
+  InitializationSettings initializationSettings = const InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   initApp();
 }
@@ -59,7 +75,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           title: 'Every Day',
           home: Builder(
             builder: (c) {
-              return const HomePage();
+              return HomePage(
+                flutterLocalNotificationsPlugin:
+                    flutterLocalNotificationsPlugin,
+              );
             },
           ),
           debugShowCheckedModeBanner: false,

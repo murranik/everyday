@@ -18,7 +18,9 @@ dependencies:
   android_alarm_manager_plus: 2.0.3
   google_maps_flutter:
   shared_preferences: 2.0.8
+  flutter_native_timezone: 2.0.0
   notification_permissions: 0.6.1
+  flutter_local_notifications: 9.3.2
   flutter_time_picker_spinner: 2.0.0
   extended_masked_text: 2.3.1
   firebase_messaging:

@@ -1,11 +1,12 @@
-import 'dart:isolate';
-import 'dart:ui';
+import 'dart:convert';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:everyday/logic/database.dart';
 import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/views/alarmview.dart';
+import 'package:everyday/views/preferenceview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,9 +17,12 @@ class AlarmForm extends StatefulWidget {
   final bool toCreate;
   final Function? addAlarmToList;
 
-  const AlarmForm(
-      {Key? key, this.alarmData, required this.toCreate, this.addAlarmToList})
-      : super(key: key);
+  const AlarmForm({
+    Key? key,
+    this.alarmData,
+    required this.toCreate,
+    this.addAlarmToList,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AlarmFormState();
@@ -57,61 +61,34 @@ class _AlarmFormState extends State<AlarmForm> {
   }
 
   static Future<void> sendOneTimeAlarm() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.reload();
-    var listOfAlarms = prefs.getStringList("ids");
-    String id;
-    if (listOfAlarms!.isNotEmpty) {
-      id = listOfAlarms.first;
-      var alarm = await DBProvider.db
-          .getModelById(int.parse(id), AlarmData(label: "")) as AlarmData;
+    final prefs = await SharedPreferences.getInstance();
 
-      listOfAlarms.removeAt(0);
-      prefs.setStringList("ids", listOfAlarms);
-      alarm.isActive = 0;
-      DBProvider.db.upsertModel(alarm);
-    }
+    await prefs.reload();
+
+    final alarmsList = prefs.getStringList('alarmsIdsList');
+    final currentAlarm =
+        AlarmData.fromMap(await json.decode(alarmsList!.first));
+    alarmsList.removeAt(0);
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('first', 'Onetime',
+            channelDescription: 'Onetime alarm channel',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await PreferenceView.flutterLocalNotificationsPlugin.show(currentAlarm.id!,
+        'Будильник', currentAlarm.label, platformChannelSpecifics);
+
+    currentAlarm.isActive = 0;
+
+    await DBProvider.db.upsertModel(currentAlarm);
+
+    await prefs.setStringList("alarmsIdsList", alarmsList);
   }
 
-  static Future<void> sendPeriodicAlarm(int id) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.reload();
-    var title = prefs.getString("title");
-    var id = prefs.getInt("id") ?? 10000;
-
-    var alarm =
-        await DBProvider.db.getModelById(id, AlarmData(label: "")) as AlarmData;
-
-    var listOfDates = alarm.rangeOfDateForRepeat!.split('/');
-    List<int> weekDaysList = [];
-    for (var date in listOfDates) {
-      switch (date) {
-        case "пн":
-          weekDaysList.add(1);
-          break;
-        case "вт":
-          weekDaysList.add(2);
-          break;
-        case "ср":
-          weekDaysList.add(3);
-          break;
-        case "чт":
-          weekDaysList.add(4);
-          break;
-        case "пт":
-          weekDaysList.add(5);
-          break;
-        case "сб":
-          weekDaysList.add(6);
-          break;
-        case "нд":
-          weekDaysList.add(7);
-          break;
-      }
-    }
-
-    for (var weekDay in weekDaysList) {}
-  }
+  static Future<void> sendPeriodicAlarm(int id) async {}
 
   String buildRangeOfDateForRepeatString() {
     var rangeOfDateForRepeatString = '';
@@ -162,21 +139,35 @@ class _AlarmFormState extends State<AlarmForm> {
                     isRepeat: 0,
                     isActive: 1,
                     rangeOfDateForRepeat: buildRangeOfDateForRepeatString());
-                var res = await DBProvider.db.upsertModel(alarm);
+                var res = await DBProvider.db.upsertModel(alarm) as AlarmData;
                 if (!widget.toCreate) {
                   widget.addAlarmToList!(res);
                 }
                 if (widget.toCreate) {
-                  var prefs = await SharedPreferences.getInstance();
-
-                  var listOfAlarms = prefs.getStringList("ids");
-                  listOfAlarms!.add("${alarm.id}");
-                  prefs.setStringList("ids", listOfAlarms);
-
-                  final int helloAlarmID = res.id;
                   if (alarm.rangeOfDateForRepeat != null) {
+                    final prefs = await SharedPreferences.getInstance();
+                    final alarmsList =
+                        prefs.getStringList('alarmsIdsList') ?? [];
+                    await prefs.remove('alarmsIdsList');
+                    List<AlarmData> alarms = [];
+                    for (var tmpAlarmJson in alarmsList) {
+                      final tmpAlarm =
+                          AlarmData.fromMap(json.decode(tmpAlarmJson));
+                      alarms.add(tmpAlarm);
+                    }
+
+                    alarms.add(res);
+                    alarms.sort((prev, next) => DateTime.parse(prev.dateTime!)
+                        .compareTo(DateTime.parse(next.dateTime!)));
+
+                    var newAlarmsList = <String>[];
+                    for (var newAlarm in alarms) {
+                      newAlarmsList.add(json.encode(newAlarm.toMap()));
+                    }
+                    prefs.setStringList("alarmsIdsList", newAlarmsList);
+
                     await AndroidAlarmManager.oneShotAt(
-                        date, helloAlarmID, sendOneTimeAlarm,
+                        date, res.id!, sendOneTimeAlarm,
                         exact: true, wakeup: true);
                   } else {}
                 }
@@ -300,7 +291,7 @@ class _AlarmFormState extends State<AlarmForm> {
                     child: TimePickerSpinner(
                       is24HourMode: true,
                       normalTextStyle: const TextStyle(
-                          fontSize: 24, color: Color.fromARGB(164, 0, 0, 0)),
+                          fontSize: 24, color: Color.fromARGB(100, 0, 0, 0)),
                       highlightedTextStyle:
                           const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
@@ -429,7 +420,7 @@ class _AlarmFormState extends State<AlarmForm> {
                     child: TimePickerSpinner(
                       is24HourMode: true,
                       normalTextStyle: const TextStyle(
-                          fontSize: 24, color: Color.fromARGB(164, 0, 0, 0)),
+                          fontSize: 24, color: Color.fromARGB(100, 0, 0, 0)),
                       highlightedTextStyle:
                           const TextStyle(fontSize: 24, color: Colors.black),
                       time: date,
