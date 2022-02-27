@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "552392225118",
+    "project_id": "every-day-331913",
+    "storage_bucket": "every-day-331913.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552392225118:android:39ea43f93c1075a1379fcf",
+        "android_client_info": {
+          "package_name": "com.example.everyday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552392225118-8f93h04jh52uugr71ps2do20du3d9gl5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwXokuXCek0-70t7rUpF6-2NxmyEGafHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552392225118-8f93h04jh52uugr71ps2do20du3d9gl5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

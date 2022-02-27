@@ -139,7 +139,7 @@ class _AlarmFormState extends State<AlarmForm> {
                     isRepeat: 0,
                     isActive: 1,
                     rangeOfDateForRepeat: buildRangeOfDateForRepeatString());
-                var res = await DBProvider.db.upsertModel(alarm) as AlarmData;
+                var res = await DBProvider.db.upsertModel(alarm);
                 if (!widget.toCreate) {
                   widget.addAlarmToList!(res);
                 }
