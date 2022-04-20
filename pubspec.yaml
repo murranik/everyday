@@ -23,8 +23,8 @@ dependencies:
   flutter_local_notifications: 9.3.2
   flutter_time_picker_spinner: 2.0.0
   extended_masked_text: 2.3.1
-  firebase_messaging: 11.2.12
-  firebase_core: 1.13.1
+  firebase_messaging:
+  firebase_core: 
   flutter_emoji:
   sqflite: 2.0.0+4
   geolocator: 7.7.1

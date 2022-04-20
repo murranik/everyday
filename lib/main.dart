@@ -29,7 +29,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   await AndroidAlarmManager.initialize();
   var prefs = await SharedPreferences.getInstance();
   var list = prefs.getStringList("ids");
