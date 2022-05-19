@@ -63,6 +63,6 @@
            </intent-filter>
        </receiver>
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyDwXokuXCek0-70t7rUpF6-2NxmyEGafHA"/>
+           android:value="AIzaSyA0CtyGXEkpE6BaEswsLS4oOE4vZXpfBGA"/>
     </application>
 </manifest>

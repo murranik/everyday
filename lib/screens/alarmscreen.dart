@@ -109,7 +109,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                     child: Text(
                       'Налаштування',
                       style: TextStyle(
-                          color: const Color(0xffc9e7f2), fontSize: 14.sp),
+                          color: const Color(0xff2A9863), fontSize: 14.sp),
                     )),
                 TextButton(
                     onPressed: () {
@@ -118,7 +118,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                     child: Text(
                       'Пшол нах',
                       style: TextStyle(
-                          color: const Color(0xffc9e7f2), fontSize: 14.sp),
+                          color: const Color(0xff2A9863), fontSize: 14.sp),
                     )),
               ],
             );
@@ -232,92 +232,6 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 1.w),
-                                                height: 4.h,
-                                                child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    List<String> m = [];
-                                                    if (element
-                                                            .rangeOfDateForRepeat !=
-                                                        null) {
-                                                      m = element
-                                                          .rangeOfDateForRepeat!
-                                                          .split('/');
-                                                      m.removeLast();
-                                                    }
-                                                    if (m.isNotEmpty) {
-                                                      return Container(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 1.sp),
-                                                        child: Text(
-                                                          weekDays[index]
-                                                              .toUpperCase(),
-                                                          style: TextStyle(
-                                                            fontSize: 13.sp,
-                                                            color: m.any((element) =>
-                                                                    element ==
-                                                                    weekDays[
-                                                                        index])
-                                                                ? const Color(
-                                                                    0xffc9e7f2)
-                                                                : Colors.black,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      return Text(
-                                                        intl.DateFormat.MMMd(
-                                                                'uk')
-                                                            .format(DateTime
-                                                                .parse(element
-                                                                    .dateTime!))
-                                                            .replaceAll(
-                                                                '.', ''),
-                                                        style: TextStyle(
-                                                            fontSize: 13.sp,
-                                                            color:
-                                                                Colors.black),
-                                                      );
-                                                    }
-                                                  },
-                                                  itemCount: element
-                                                              .rangeOfDateForRepeat ==
-                                                          ""
-                                                      ? 1
-                                                      : element
-                                                              .rangeOfDateForRepeat!
-                                                              .split('/')
-                                                              .isNotEmpty
-                                                          ? 7
-                                                          : 1,
-                                                ),
-                                              ),
-                                              Checkbox(
-                                                  value: element.isActive == 1
-                                                      ? true
-                                                      : false,
-                                                  activeColor:
-                                                      const Color(0xffc9e7f2),
-                                                  onChanged: (value) {
-                                                    final intValue =
-                                                        value == true ? 1 : 0;
-                                                    element.isActive = intValue;
-                                                    updateAlarm(element);
-                                                    setState(() {});
-                                                  })
-                                            ],
-                                          )
                                         ],
                                       )
                                     : Row(
@@ -363,98 +277,6 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                                               ],
                                             ),
                                           ),
-                                          Expanded(
-                                              flex: 37,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.all(2.sp),
-                                                    height: 4.h,
-                                                    child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        List<String> m = [];
-                                                        if (element
-                                                                .rangeOfDateForRepeat !=
-                                                            null) {
-                                                          m = element
-                                                              .rangeOfDateForRepeat!
-                                                              .split('/');
-                                                          m.removeLast();
-                                                        }
-                                                        if (m.isNotEmpty) {
-                                                          return Container(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 1.sp),
-                                                            child: Text(
-                                                              weekDays[index],
-                                                              style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: m.any((element) =>
-                                                                        element ==
-                                                                        weekDays[
-                                                                            index])
-                                                                    ? const Color(
-                                                                        0xffc9e7f2)
-                                                                    : Colors
-                                                                        .black,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          return Text(
-                                                            intl.DateFormat
-                                                                    .MMMd('uk')
-                                                                .format(DateTime
-                                                                    .parse(element
-                                                                        .dateTime!))
-                                                                .replaceAll(
-                                                                    '.', ''),
-                                                            style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: Colors
-                                                                    .black),
-                                                          );
-                                                        }
-                                                      },
-                                                      itemCount: element
-                                                                  .rangeOfDateForRepeat ==
-                                                              ""
-                                                          ? 1
-                                                          : element
-                                                                  .rangeOfDateForRepeat!
-                                                                  .split('/')
-                                                                  .isNotEmpty
-                                                              ? 7
-                                                              : 1,
-                                                    ),
-                                                  ),
-                                                  Checkbox(
-                                                      value:
-                                                          element.isActive == 1
-                                                              ? true
-                                                              : false,
-                                                      activeColor: const Color(
-                                                          0xffc9e7f2),
-                                                      onChanged: (value) {
-                                                        final intValue =
-                                                            value == true
-                                                                ? 1
-                                                                : 0;
-                                                        element.isActive =
-                                                            intValue;
-                                                        updateAlarm(element);
-                                                        setState(() {});
-                                                      })
-                                                ],
-                                              ))
                                         ],
                                       )),
                           )

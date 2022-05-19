@@ -16,6 +16,8 @@ dependencies:
   provider: ^5.0.0
   permission_handler: 8.2.5
   android_alarm_manager_plus: 2.0.3
+  flutter_simple_calculator: 2.2.0
+  input_calculator: 2.0.0
   google_maps_flutter:
   shared_preferences: 2.0.8
   flutter_native_timezone: 2.0.0
@@ -52,4 +54,9 @@ flutter:
     - assets/images/mapmarker.png
     - assets/images/money-bag.png
     - assets/images/budget.png
+    - assets/images/calculator.png
+    - assets/images/chronometer.png
+    - assets/images/compass.png
+    - assets/images/compassarrow.png
+    - assets/images/stopwatch.png
   uses-material-design: true

@@ -3,6 +3,7 @@ import 'package:everyday/forms/alarmform.dart';
 import 'package:everyday/logic/database.dart';
 import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/screens/alarmscreen.dart';
+import 'package:everyday/screens/calculatorscreen.dart';
 import 'package:everyday/screens/calendarscreen.dart';
 import 'package:everyday/screens/finances/financesscreen.dart';
 import 'package:everyday/screens/mapscreen.dart';
@@ -73,6 +74,12 @@ class _HomePageState extends State<HomePage> {
           pageName = "Map";
         }
         break;
+      case "Calc":
+        {
+          title = "Калькулятор";
+          pageName = "Calc";
+        }
+        break;
       default:
         {
           title = "Будильник";
@@ -96,12 +103,15 @@ class _HomePageState extends State<HomePage> {
         )),
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: const Color(0xffc9e7f2),
-          title: Text(title),
+          backgroundColor: const Color(0xff2A9863),
+          title: Text(
+            title,
+            style: const TextStyle(color: Colors.black),
+          ),
           actions: [
             if (pageName == "Alarm")
               MaterialButton(
-                color: const Color(0xffc9e7f2),
+                color: const Color(0xff2A9863),
                 onPressed: () async {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AlarmForm(
@@ -120,7 +130,7 @@ class _HomePageState extends State<HomePage> {
         body: Builder(builder: (context) {
           if (pageName == "Home") {
             return Container(
-                color: const Color(0xffc9e7f2),
+                color: const Color(0xff2A9863),
                 child: const Center(
                   child: Text('hello'),
                 ));
@@ -137,6 +147,8 @@ class _HomePageState extends State<HomePage> {
             return const FinancesScreen();
           } else if (pageName == "Map") {
             return const MapScreen();
+          } else if (pageName == "Calc") {
+            return const CalculatorScreen();
           } else {
             return const Text("error");
           }

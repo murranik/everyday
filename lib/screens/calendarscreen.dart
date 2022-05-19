@@ -168,7 +168,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       buffer.write(hexString.replaceFirst('#', ''));
       return Color(int.parse(buffer.toString(), radix: 16));
     }
-    return const Color(0xffc9e7f2);
+    return const Color(0xff2A9863);
   }
 
   List<AppointmentExtend> _getDataSource() {

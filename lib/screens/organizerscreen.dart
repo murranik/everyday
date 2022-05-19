@@ -42,7 +42,7 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             MaterialButton(
-              color: const Color(0xffc9e7f2),
+              color: const Color(0xff2A9863),
               onPressed: () async {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
@@ -58,7 +58,7 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
               child: const Text("Додати подію"),
             ),
             MaterialButton(
-              color: const Color(0xffc9e7f2),
+              color: const Color(0xff2A9863),
               onPressed: () async {
                 await DBProvider.db.clearDatabase();
                 events.clear();

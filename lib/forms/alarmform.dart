@@ -42,15 +42,6 @@ class _AlarmFormState extends State<AlarmForm> {
     titleController.text = widget.alarmData!.label;
     if (!widget.toCreate) {
       date = DateTime.parse(widget.alarmData!.dateTime!);
-      if (widget.alarmData!.rangeOfDateForRepeat != null) {
-        var m = widget.alarmData!.rangeOfDateForRepeat!.split('/');
-        m.removeLast();
-        for (var i = 0; i < weekDays.length; i++) {
-          if (m.any((element) => element == weekDays[i])) {
-            weekDaysBool[i] = true;
-          }
-        }
-      }
     }
     super.initState();
   }
@@ -88,25 +79,13 @@ class _AlarmFormState extends State<AlarmForm> {
     await prefs.setStringList("alarmsIdsList", alarmsList);
   }
 
-  static Future<void> sendPeriodicAlarm(int id) async {}
-
-  String buildRangeOfDateForRepeatString() {
-    var rangeOfDateForRepeatString = '';
-    for (var i = 0; i < weekDays.length; i++) {
-      if (weekDaysBool[i]) {
-        rangeOfDateForRepeatString += weekDays[i] + "/";
-      }
-    }
-    return rangeOfDateForRepeatString;
-  }
-
   @override
   Widget build(BuildContext context) {
     var orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: const Color(0xffc9e7f2),
+        backgroundColor: const Color(0xff2A9863),
         actions: [
           if (!widget.toCreate)
             OutlinedButton(
@@ -114,7 +93,7 @@ class _AlarmFormState extends State<AlarmForm> {
                 backgroundColor:
                     MaterialStateProperty.resolveWith<Color>((states) {
                   if (states.contains(MaterialState.disabled)) {
-                    return const Color(0xffc9e7f2);
+                    return const Color(0xff2A9863);
                   }
                   return Colors.red;
                 }),
@@ -137,39 +116,35 @@ class _AlarmFormState extends State<AlarmForm> {
                     dateTime: date.toString(),
                     id: widget.alarmData!.id,
                     isRepeat: 0,
-                    isActive: 1,
-                    rangeOfDateForRepeat: buildRangeOfDateForRepeatString());
+                    isActive: 1);
                 var res = await DBProvider.db.upsertModel(alarm);
                 if (!widget.toCreate) {
                   widget.addAlarmToList!(res);
                 }
                 if (widget.toCreate) {
-                  if (alarm.rangeOfDateForRepeat != null) {
-                    final prefs = await SharedPreferences.getInstance();
-                    final alarmsList =
-                        prefs.getStringList('alarmsIdsList') ?? [];
-                    await prefs.remove('alarmsIdsList');
-                    List<AlarmData> alarms = [];
-                    for (var tmpAlarmJson in alarmsList) {
-                      final tmpAlarm =
-                          AlarmData.fromMap(json.decode(tmpAlarmJson));
-                      alarms.add(tmpAlarm);
-                    }
+                  final prefs = await SharedPreferences.getInstance();
+                  final alarmsList = prefs.getStringList('alarmsIdsList') ?? [];
+                  await prefs.remove('alarmsIdsList');
+                  List<AlarmData> alarms = [];
+                  for (var tmpAlarmJson in alarmsList) {
+                    final tmpAlarm =
+                        AlarmData.fromMap(json.decode(tmpAlarmJson));
+                    alarms.add(tmpAlarm);
+                  }
 
-                    alarms.add(res);
-                    alarms.sort((prev, next) => DateTime.parse(prev.dateTime!)
-                        .compareTo(DateTime.parse(next.dateTime!)));
+                  alarms.add(res);
+                  alarms.sort((prev, next) => DateTime.parse(prev.dateTime!)
+                      .compareTo(DateTime.parse(next.dateTime!)));
 
-                    var newAlarmsList = <String>[];
-                    for (var newAlarm in alarms) {
-                      newAlarmsList.add(json.encode(newAlarm.toMap()));
-                    }
-                    prefs.setStringList("alarmsIdsList", newAlarmsList);
+                  var newAlarmsList = <String>[];
+                  for (var newAlarm in alarms) {
+                    newAlarmsList.add(json.encode(newAlarm.toMap()));
+                  }
+                  prefs.setStringList("alarmsIdsList", newAlarmsList);
 
-                    await AndroidAlarmManager.oneShotAt(
-                        date, res.id!, sendOneTimeAlarm,
-                        exact: true, wakeup: true);
-                  } else {}
+                  await AndroidAlarmManager.oneShotAt(
+                      date, res.id!, sendOneTimeAlarm,
+                      exact: true, wakeup: true);
                 }
                 Navigator.of(context).pop();
               },
@@ -193,41 +168,6 @@ class _AlarmFormState extends State<AlarmForm> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 1.h,
-                          ),
-                          Builder(builder: (context) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                for (var i = 0; i < weekDays.length; i++)
-                                  GestureDetector(
-                                    onTap: () {
-                                      weekDaysBool[i] = !weekDaysBool[i];
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      width: 4.h,
-                                      height: 4.h,
-                                      decoration: weekDaysBool[i] == true
-                                          ? BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius:
-                                                  BorderRadius.circular(24))
-                                          : const BoxDecoration(),
-                                      padding: EdgeInsets.only(left: 1.sp),
-                                      child: Text(
-                                        weekDays[i].toUpperCase(),
-                                        style: TextStyle(
-                                            fontSize: 11.sp,
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                  )
-                              ],
-                            );
-                          }),
-                          SizedBox(
                             height: 1.6.h,
                           ),
                           Row(
@@ -245,29 +185,29 @@ class _AlarmFormState extends State<AlarmForm> {
                                     labelStyle:
                                         const TextStyle(color: Colors.black),
                                     prefixIcon: const Icon(Icons.event,
-                                        color: Color(0xffc9e7f2)),
+                                        color: Color(0xff2A9863)),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(26),
                                       borderSide: const BorderSide(
-                                          color: Color(0xffc9e7f2)),
+                                          color: Color(0xff2A9863)),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(26),
                                       borderSide: const BorderSide(
-                                          color: Color(0xffc9e7f2)),
+                                          color: Color(0xff2A9863)),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(26),
                                       borderSide: BorderSide(
                                           color: ''.isEmpty
-                                              ? const Color(0xffc9e7f2)
+                                              ? const Color(0xff2A9863)
                                               : Colors.red),
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(26),
                                       borderSide: BorderSide(
                                           color: ''.isEmpty
-                                              ? const Color(0xffc9e7f2)
+                                              ? const Color(0xff2A9863)
                                               : Colors.red),
                                     ),
                                   ),
@@ -322,40 +262,6 @@ class _AlarmFormState extends State<AlarmForm> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 1.h,
-                        ),
-                        Builder(builder: (context) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              for (var i = 0; i < weekDays.length; i++)
-                                GestureDetector(
-                                  onTap: () {
-                                    weekDaysBool[i] = !weekDaysBool[i];
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 4.h,
-                                    height: 4.h,
-                                    decoration: weekDaysBool[i] == true
-                                        ? BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius:
-                                                BorderRadius.circular(24))
-                                        : const BoxDecoration(),
-                                    padding: EdgeInsets.only(left: 1.sp),
-                                    child: Text(
-                                      weekDays[i].toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 11.sp, color: Colors.black),
-                                    ),
-                                  ),
-                                )
-                            ],
-                          );
-                        }),
-                        SizedBox(
                           height: 1.6.h,
                         ),
                         Row(
@@ -373,29 +279,29 @@ class _AlarmFormState extends State<AlarmForm> {
                                   labelStyle:
                                       const TextStyle(color: Colors.black),
                                   prefixIcon: const Icon(Icons.event,
-                                      color: Color(0xffc9e7f2)),
+                                      color: Color(0xff2A9863)),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(26),
                                     borderSide: const BorderSide(
-                                        color: Color(0xffc9e7f2)),
+                                        color: Color(0xff2A9863)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(26),
                                     borderSide: const BorderSide(
-                                        color: Color(0xffc9e7f2)),
+                                        color: Color(0xff2A9863)),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(26),
                                     borderSide: BorderSide(
                                         color: helpText.isEmpty
-                                            ? const Color(0xffc9e7f2)
+                                            ? const Color(0xff2A9863)
                                             : Colors.red),
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(26),
                                     borderSide: BorderSide(
                                         color: helpText.isEmpty
-                                            ? const Color(0xffc9e7f2)
+                                            ? const Color(0xff2A9863)
                                             : Colors.red),
                                   ),
                                 ),

@@ -38,7 +38,7 @@ class _EventFormState extends State<EventForm> {
     titleController.text = widget.event!.label;
     mainTextController.text = widget.event!.text ?? "";
     calendarColor = fromHex(
-        widget.event!.calendarColor ?? const Color(0xffc9e7f2).toString());
+        widget.event!.calendarColor ?? const Color(0xff2A9863).toString());
     if (widget.event!.startDate != null) {
       startDate = DateTime.parse(widget.event!.startDate!);
     }
@@ -69,7 +69,7 @@ class _EventFormState extends State<EventForm> {
       buffer.write(hexString.replaceFirst('#', ''));
       return Color(int.parse(buffer.toString(), radix: 16));
     }
-    return const Color(0xffc9e7f2);
+    return const Color(0xff2A9863);
   }
 
   Future<bool> colorPickerDialog(Orientation orientation) async {
@@ -96,7 +96,7 @@ class _EventFormState extends State<EventForm> {
         'Вибраний колір та його відтінки',
         style: Theme.of(context).textTheme.subtitle1,
       ),
-      borderColor: const Color(0xffc9e7f2),
+      borderColor: const Color(0xff2A9863),
       showMaterialName: true,
       showColorName: true,
       showColorCode: true,
@@ -128,7 +128,7 @@ class _EventFormState extends State<EventForm> {
     var orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xffc9e7f2),
+        backgroundColor: const Color(0xff2A9863),
         actions: [
           OutlinedButton(
               onPressed: () async {
@@ -216,29 +216,29 @@ class _EventFormState extends State<EventForm> {
                             hintText: 'Заповніть, будь ласка, поле',
                             labelStyle: const TextStyle(color: Colors.black),
                             prefixIcon: const Icon(Icons.event,
-                                color: Color(0xffc9e7f2)),
+                                color: Color(0xff2A9863)),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide:
-                                  const BorderSide(color: Color(0xffc9e7f2)),
+                                  const BorderSide(color: Color(0xff2A9863)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide:
-                                  const BorderSide(color: Color(0xffc9e7f2)),
+                                  const BorderSide(color: Color(0xff2A9863)),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide: BorderSide(
                                   color: helpText.isEmpty
-                                      ? const Color(0xffc9e7f2)
+                                      ? const Color(0xff2A9863)
                                       : Colors.red),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide: BorderSide(
                                   color: helpText.isEmpty
-                                      ? const Color(0xffc9e7f2)
+                                      ? const Color(0xff2A9863)
                                       : Colors.red),
                             ),
                           ),
@@ -250,19 +250,6 @@ class _EventFormState extends State<EventForm> {
                           },
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text("Будильник"),
-                          Checkbox(
-                              activeColor: const Color(0xffc9e7f2),
-                              value: enableAlarm,
-                              onChanged: (value) {
-                                enableAlarm = value!;
-                                setState(() {});
-                              })
-                        ],
-                      )
                     ],
                   ),
                   SizedBox(
@@ -288,7 +275,7 @@ class _EventFormState extends State<EventForm> {
                                     data: ThemeData.light().copyWith(
                                       colorScheme:
                                           const ColorScheme.light().copyWith(
-                                        primary: const Color(0xffc9e7f2),
+                                        primary: const Color(0xff2A9863),
                                       ),
                                     ),
                                     child: DateTimePicker(
@@ -322,7 +309,7 @@ class _EventFormState extends State<EventForm> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   border: Border.all(
-                                      color: const Color(0xffc9e7f2),
+                                      color: const Color(0xff2A9863),
                                       style: BorderStyle.solid)),
                               child: Row(
                                 children: [
@@ -351,7 +338,7 @@ class _EventFormState extends State<EventForm> {
                                     data: ThemeData.light().copyWith(
                                       colorScheme:
                                           const ColorScheme.light().copyWith(
-                                        primary: const Color(0xffc9e7f2),
+                                        primary: const Color(0xff2A9863),
                                       ),
                                     ),
                                     child: DateTimePicker(
@@ -385,7 +372,7 @@ class _EventFormState extends State<EventForm> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   border: Border.all(
-                                      color: Color(0xffc9e7f2),
+                                      color: Color(0xff2A9863),
                                       style: BorderStyle.solid)),
                               child: Row(
                                 children: [
@@ -414,11 +401,11 @@ class _EventFormState extends State<EventForm> {
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(26),
-                        borderSide: const BorderSide(color: Color(0xffc9e7f2)),
+                        borderSide: const BorderSide(color: Color(0xff2A9863)),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(26),
-                        borderSide: const BorderSide(color: Color(0xffc9e7f2)),
+                        borderSide: const BorderSide(color: Color(0xff2A9863)),
                       ),
                     ),
                   ),
@@ -443,29 +430,29 @@ class _EventFormState extends State<EventForm> {
                             labelText: 'Назва події',
                             labelStyle: const TextStyle(color: Colors.black),
                             prefixIcon: const Icon(Icons.event,
-                                color: Color(0xffc9e7f2)),
+                                color: Color(0xff2A9863)),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide:
-                                  const BorderSide(color: Color(0xffc9e7f2)),
+                                  const BorderSide(color: Color(0xff2A9863)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide:
-                                  const BorderSide(color: Color(0xffc9e7f2)),
+                                  const BorderSide(color: Color(0xff2A9863)),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide: BorderSide(
                                   color: helpText.isEmpty
-                                      ? const Color(0xffc9e7f2)
+                                      ? const Color(0xff2A9863)
                                       : Colors.red),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(26),
                               borderSide: BorderSide(
                                   color: helpText.isEmpty
-                                      ? const Color(0xffc9e7f2)
+                                      ? const Color(0xff2A9863)
                                       : Colors.red),
                             ),
                           ),
@@ -515,19 +502,6 @@ class _EventFormState extends State<EventForm> {
                           ],
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text("Будильник"),
-                          Checkbox(
-                              activeColor: const Color(0xffc9e7f2),
-                              value: enableAlarm,
-                              onChanged: (value) {
-                                enableAlarm = value!;
-                                setState(() {});
-                              })
-                        ],
-                      ),
                     ],
                   ),
                   SizedBox(
@@ -547,7 +521,7 @@ class _EventFormState extends State<EventForm> {
                                     data: ThemeData.light().copyWith(
                                       colorScheme:
                                           const ColorScheme.light().copyWith(
-                                        primary: const Color(0xffc9e7f2),
+                                        primary: const Color(0xff2A9863),
                                       ),
                                     ),
                                     child: DateTimePicker(
@@ -581,7 +555,7 @@ class _EventFormState extends State<EventForm> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   border: Border.all(
-                                      color: Color(0xffc9e7f2),
+                                      color: Color(0xff2A9863),
                                       style: BorderStyle.solid)),
                               child: Row(
                                 children: [
@@ -611,7 +585,7 @@ class _EventFormState extends State<EventForm> {
                                     data: ThemeData.light().copyWith(
                                       colorScheme:
                                           const ColorScheme.light().copyWith(
-                                        primary: const Color(0xffc9e7f2),
+                                        primary: const Color(0xff2A9863),
                                       ),
                                     ),
                                     child: DateTimePicker(
@@ -645,7 +619,7 @@ class _EventFormState extends State<EventForm> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   border: Border.all(
-                                      color: Color(0xffc9e7f2),
+                                      color: Color(0xff2A9863),
                                       style: BorderStyle.solid)),
                               child: Row(
                                 children: [
@@ -674,11 +648,11 @@ class _EventFormState extends State<EventForm> {
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(26),
-                        borderSide: const BorderSide(color: Color(0xffc9e7f2)),
+                        borderSide: const BorderSide(color: Color(0xff2A9863)),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(26),
-                        borderSide: const BorderSide(color: Color(0xffc9e7f2)),
+                        borderSide: const BorderSide(color: Color(0xff2A9863)),
                       ),
                     ),
                   ),

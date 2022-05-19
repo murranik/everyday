@@ -308,23 +308,23 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                         maxLength: 20,
                                         controller: budgetController,
                                         keyboardType: TextInputType.number,
-                                        cursorColor: const Color(0xffc9e7f2),
+                                        cursorColor: const Color(0xff2A9863),
                                         decoration: InputDecoration(
                                           enabledBorder:
                                               const UnderlineInputBorder(
                                                   borderSide: BorderSide(
                                                       color:
-                                                          Color(0xffc9e7f2))),
+                                                          Color(0xff2A9863))),
                                           focusedBorder:
                                               const UnderlineInputBorder(
                                                   borderSide: BorderSide(
                                                       color:
-                                                          Color(0xffc9e7f2))),
+                                                          Color(0xff2A9863))),
                                           counterText: '',
                                           suffixIcon: IconButton(
                                               onPressed: budgetController.clear,
                                               icon: const Icon(Icons.clear),
-                                              color: const Color(0xffc9e7f2)),
+                                              color: const Color(0xff2A9863)),
                                         ),
                                       ),
                                       Row(

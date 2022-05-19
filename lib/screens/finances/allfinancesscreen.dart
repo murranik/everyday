@@ -27,7 +27,7 @@ class _AllFinancesScreenState extends State<AllFinancesScreen> {
     var orientation = MediaQuery.of(context).orientation;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xffc9e7f2),
+          backgroundColor: const Color(0xff2A9863),
           centerTitle: true,
           title: Text(widget.title),
         ),

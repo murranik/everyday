@@ -27,11 +27,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Every Day"),
+          title: const Text(
+            "Every Day",
+            style: TextStyle(color: Colors.black),
+          ),
           centerTitle: true,
-          backgroundColor: const Color(0xffc9e7f2),
+          backgroundColor: const Color(0xff2A9863),
         ),
-        backgroundColor: const Color(0xffc9e7f2),
+        backgroundColor: const Color(0xff2A9863),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,6 +66,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               SizedBox(
                 height: 2.h,
               ),
+              iconButtonWithText(
+                  "Калькулятор", "assets/images/calculator.png", "Calc"),
+              SizedBox(
+                height: 2.h,
+              ),
             ],
           ),
         ));
@@ -91,7 +99,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           Text(
             text,
-            style: TextStyle(fontSize: 14.sp),
+            style: TextStyle(fontSize: 14.sp, color: Colors.black),
           )
         ],
       ),

@@ -56,22 +56,22 @@ class _FinanceDialogsState extends State<FinanceDialog> {
               labelStyle: TextStyle(fontSize: 12.sp, color: Colors.black),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(26),
                 borderSide: BorderSide(
-                    color: !isError ? const Color(0xffc9e7f2) : Colors.red),
+                    color: !isError ? const Color(0xff2A9863) : Colors.red),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(26),
                 borderSide: BorderSide(
-                    color: !isError ? const Color(0xffc9e7f2) : Colors.red),
+                    color: !isError ? const Color(0xff2A9863) : Colors.red),
               ),
             ),
             onChanged: (v) {
@@ -91,13 +91,13 @@ class _FinanceDialogsState extends State<FinanceDialog> {
               labelStyle: TextStyle(fontSize: 12.sp, color: Colors.black),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide(color: Color(0xffc9e7f2))),
+                  borderSide: const BorderSide(color: Color(0xff2A9863))),
             ),
           ),
           Row(
@@ -107,7 +107,7 @@ class _FinanceDialogsState extends State<FinanceDialog> {
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.resolveWith<Color>((states) {
-                    return const Color(0xffc9e7f2);
+                    return const Color(0xff2A9863);
                   }),
                 ),
                 onPressed: () async {
