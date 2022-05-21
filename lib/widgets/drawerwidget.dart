@@ -71,6 +71,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               SizedBox(
                 height: 2.h,
               ),
+              iconButtonWithText(
+                  "Таймер", "assets/images/chronometer.png", "Timer"),
+              SizedBox(
+                height: 2.h,
+              ),
+              iconButtonWithText(
+                  "Секундомір", "assets/images/stopwatch.png", "Sec"),
+              SizedBox(
+                height: 2.h,
+              ),
+              iconButtonWithText(
+                  "Компас", "assets/images/compass.png", "Compass"),
+              SizedBox(
+                height: 2.h,
+              ),
             ],
           ),
         ));

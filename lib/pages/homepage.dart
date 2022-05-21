@@ -5,9 +5,11 @@ import 'package:everyday/logic/models/alarm.dart';
 import 'package:everyday/screens/alarmscreen.dart';
 import 'package:everyday/screens/calculatorscreen.dart';
 import 'package:everyday/screens/calendarscreen.dart';
+import 'package:everyday/screens/compass.dart';
 import 'package:everyday/screens/finances/financesscreen.dart';
 import 'package:everyday/screens/mapscreen.dart';
 import 'package:everyday/screens/organizerscreen.dart';
+import 'package:everyday/screens/secundomer.dart';
 import 'package:everyday/views/alarmview.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/widgets/drawerwidget.dart';
@@ -80,6 +82,24 @@ class _HomePageState extends State<HomePage> {
           pageName = "Calc";
         }
         break;
+      case "Timer":
+        {
+          title = "Таймер";
+          pageName = "Timer";
+        }
+        break;
+      case "Sec":
+        {
+          title = "Секундомір";
+          pageName = "Sec";
+        }
+        break;
+      case "Compass":
+        {
+          title = "Компас";
+          pageName = "Compass";
+        }
+        break;
       default:
         {
           title = "Будильник";
@@ -148,6 +168,12 @@ class _HomePageState extends State<HomePage> {
           } else if (pageName == "Map") {
             return const MapScreen();
           } else if (pageName == "Calc") {
+            return const CalculatorScreen();
+          } else if (pageName == "Sec") {
+            return const SecScreen();
+          } else if (pageName == "Compass") {
+            return const CompassScreen();
+          } else if (pageName == "Timer") {
             return const CalculatorScreen();
           } else {
             return const Text("error");

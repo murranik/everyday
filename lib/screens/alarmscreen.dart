@@ -33,8 +33,8 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   void initState() {
     alarmView = Provider.of<AlarmView>(context, listen: false);
     permissionStatusFuture = getCheckNotificationPermStatus();
-    WidgetsBinding.instance!.addObserver(this);
-    WidgetsBinding.instance!
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance
         .addPostFrameCallback((_) => getNotificationAccessDialog());
     super.initState();
   }

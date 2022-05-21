@@ -17,10 +17,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     var orientation = MediaQuery.of(context).orientation;
     return const SimpleCalculator(
       theme: CalculatorThemeData(
-        displayColor: Colors.black,
-        displayStyle: TextStyle(fontSize: 80, color: Colors.yellow),
-        /*...*/
-      ),
+          displayColor: Colors.white,
+          displayStyle: TextStyle(fontSize: 80, color: Colors.black),
+          operatorColor: const Color(0xff2A9863)),
     );
   }
 }
