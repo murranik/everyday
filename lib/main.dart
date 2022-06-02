@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:everyday/pages/homepage.dart';
 import 'package:everyday/views/alarmview.dart';
+import 'package:everyday/views/countdowns.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/views/preferenceview.dart';
 import 'package:flutter/foundation.dart';
@@ -52,6 +53,9 @@ void initApp() async {
         ),
         ChangeNotifierProvider<PreferenceView>(
           create: (_) => PreferenceView(),
+        ),
+        ChangeNotifierProvider<CountdownsView>(
+          create: (_) => CountdownsView(),
         ),
       ],
       child: const MyApp(),

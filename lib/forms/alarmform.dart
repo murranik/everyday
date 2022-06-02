@@ -111,42 +111,45 @@ class _AlarmFormState extends State<AlarmForm> {
             ),
           OutlinedButton(
               onPressed: () async {
-                var alarm = AlarmData(
-                    label: titleController.text,
-                    dateTime: date.toString(),
-                    id: widget.alarmData!.id,
-                    isRepeat: 0,
-                    isActive: 1);
-                var res = await DBProvider.db.upsertModel(alarm);
-                if (!widget.toCreate) {
-                  widget.addAlarmToList!(res);
-                }
-                if (widget.toCreate) {
-                  final prefs = await SharedPreferences.getInstance();
-                  final alarmsList = prefs.getStringList('alarmsIdsList') ?? [];
-                  await prefs.remove('alarmsIdsList');
-                  List<AlarmData> alarms = [];
-                  for (var tmpAlarmJson in alarmsList) {
-                    final tmpAlarm =
-                        AlarmData.fromMap(json.decode(tmpAlarmJson));
-                    alarms.add(tmpAlarm);
+                if (titleController.text != "") {
+                  var alarm = AlarmData(
+                      label: titleController.text,
+                      dateTime: date.toString(),
+                      id: widget.alarmData!.id,
+                      isRepeat: 0,
+                      isActive: 1);
+                  var res = await DBProvider.db.upsertModel(alarm);
+                  if (!widget.toCreate) {
+                    widget.addAlarmToList!(res);
                   }
+                  if (widget.toCreate) {
+                    final prefs = await SharedPreferences.getInstance();
+                    final alarmsList =
+                        prefs.getStringList('alarmsIdsList') ?? [];
+                    await prefs.remove('alarmsIdsList');
+                    List<AlarmData> alarms = [];
+                    for (var tmpAlarmJson in alarmsList) {
+                      final tmpAlarm =
+                          AlarmData.fromMap(json.decode(tmpAlarmJson));
+                      alarms.add(tmpAlarm);
+                    }
 
-                  alarms.add(res);
-                  alarms.sort((prev, next) => DateTime.parse(prev.dateTime!)
-                      .compareTo(DateTime.parse(next.dateTime!)));
+                    alarms.add(res);
+                    alarms.sort((prev, next) => DateTime.parse(prev.dateTime!)
+                        .compareTo(DateTime.parse(next.dateTime!)));
 
-                  var newAlarmsList = <String>[];
-                  for (var newAlarm in alarms) {
-                    newAlarmsList.add(json.encode(newAlarm.toMap()));
+                    var newAlarmsList = <String>[];
+                    for (var newAlarm in alarms) {
+                      newAlarmsList.add(json.encode(newAlarm.toMap()));
+                    }
+                    prefs.setStringList("alarmsIdsList", newAlarmsList);
+
+                    await AndroidAlarmManager.oneShotAt(
+                        date, res.id!, sendOneTimeAlarm,
+                        exact: true, wakeup: true);
                   }
-                  prefs.setStringList("alarmsIdsList", newAlarmsList);
-
-                  await AndroidAlarmManager.oneShotAt(
-                      date, res.id!, sendOneTimeAlarm,
-                      exact: true, wakeup: true);
+                  Navigator.of(context).pop();
                 }
-                Navigator.of(context).pop();
               },
               child: const Text(
                 "Зберегти",

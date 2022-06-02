@@ -10,6 +10,7 @@ import 'package:everyday/screens/finances/financesscreen.dart';
 import 'package:everyday/screens/mapscreen.dart';
 import 'package:everyday/screens/organizerscreen.dart';
 import 'package:everyday/screens/secundomer.dart';
+import 'package:everyday/screens/timerscreen.dart';
 import 'package:everyday/views/alarmview.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/widgets/drawerwidget.dart';
@@ -145,6 +146,16 @@ class _HomePageState extends State<HomePage> {
                   size: 30.sp,
                 ),
               ),
+            if (pageName == "Timer")
+              Container(
+                margin: EdgeInsets.only(
+                    right: orientation == Orientation.portrait ? 3.h : 3.w),
+                child: const Tooltip(
+                  message:
+                      "Після вибору тривалості натисніть на оранжевий екран",
+                  child: Icon(Icons.question_mark),
+                ),
+              )
           ],
         ),
         body: Builder(builder: (context) {
@@ -174,7 +185,7 @@ class _HomePageState extends State<HomePage> {
           } else if (pageName == "Compass") {
             return const CompassScreen();
           } else if (pageName == "Timer") {
-            return const CalculatorScreen();
+            return const TimerCountDownScreen();
           } else {
             return const Text("error");
           }
