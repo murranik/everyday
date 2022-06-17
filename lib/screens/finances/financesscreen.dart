@@ -1,9 +1,11 @@
 import 'package:everyday/dialogs/financedialog.dart';
 import 'package:everyday/logic/database.dart';
 import 'package:everyday/logic/models/financemodel.dart';
+import 'package:everyday/screens/depositscreen.dart';
 import 'package:everyday/screens/finances/allfinancesscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:extended_masked_text/extended_masked_text.dart';
@@ -21,9 +23,16 @@ class _FinancesScreenState extends State<FinancesScreen> {
   var budget = 0.0;
   List<FinanceModel> incomeFinances = [];
   List<FinanceModel> notIncomeFinances = [];
+  var prefs;
 
   @override
   void initState() {
+    SharedPreferences.getInstance().then((value) {
+      prefs = value;
+      var amount = prefs.get("budget");
+      budget = amount;
+      setState(() {});
+    });
     budgetController.addListener(() {
       if (budgetController.text != '') {
         budget = double.parse(budgetController.text.replaceAll(' ', ''));
@@ -199,9 +208,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                 context: context,
                                 builder: (builder) {
                                   return Container(
-                                      color: Colors
-                                          .transparent, //could change this to Color(0xFF737373),
-                                      //so you don't have to change MaterialApp canvasColor
+                                      color: Colors.transparent,
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white,
@@ -342,8 +349,11 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                                 ),
                                               )),
                                           OutlinedButton(
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 setState(() {});
+
+                                                prefs.setDouble(
+                                                    "budget", budget);
                                                 Navigator.of(context).pop();
                                               },
                                               child: const Text(
@@ -429,7 +439,29 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                   const Text('Всі витрати'),
                                 ],
                               ),
-                            )
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        DepositScreen(
+                                          budget: budget,
+                                        )));
+                              },
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Image.asset(
+                                    'assets/images/deposit.png',
+                                    width: 10.w,
+                                    height: 10.w,
+                                  ),
+                                  const Text('Депозит'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -475,7 +507,7 @@ class _DecoratedContainerState extends State<DecoratedContainer> {
               widget.onTap!();
             },
             child: Container(
-                height: orientation == Orientation.landscape ? 7.h : 9.h,
+                height: orientation == Orientation.landscape ? 7.h : 11.h,
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(
                   left: 3.w,

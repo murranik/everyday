@@ -10,7 +10,7 @@ class DBProvider {
   DBProvider._();
 
   static final DBProvider db = DBProvider._();
-  static Database ?_db;
+  static Database? _db;
 
   Future<Database?> get database async {
     if (_db != null) return _db;
@@ -20,10 +20,10 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = documentsDirectory.path + "EveryDay.db";
+    String path = documentsDirectory.path + "EveryDay2.db";
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-          await db.execute("""
+      await db.execute("""
           CREATE TABLE Events (
             id INTEGER PRIMARY KEY,
             label TEXT,
@@ -31,9 +31,8 @@ class DBProvider {
             startDate TEXT,
             endDate TEXT,
             calendarColor TEXT
-      )"""
-          );
-          await db.execute("""
+      )""");
+      await db.execute("""
           CREATE TABLE AlarmDatas (
             id INTEGER PRIMARY KEY,
             label TEXT,
@@ -41,66 +40,76 @@ class DBProvider {
             rangeOfDateForRepeat TEXT,
             isRepeat INTEGER,
             isActive INTEGER
-      )"""
-          );
-          await db.execute("""
+      )""");
+      await db.execute("""
           CREATE TABLE FinanceModels (
             id INTEGER PRIMARY KEY,
             label TEXT,
+            eventId INTEGER,
             price REAL,
-            isIncome INTEGER
-      )"""
-          );
-        }
-    );
+            isIncome INTEGER,
+            FOREIGN KEY (eventId) REFERENCES FinanceModels (id)
+              ON DELETE CASCADE ON UPDATE NO ACTION  
+      )""");
+    });
   }
 
   //Strings
-  String getTableNameFromType(dynamic type){
-    return type.toString().replaceAll("Instance of ", "").replaceAll("'", "") + "s";
+  String getTableNameFromType(dynamic type) {
+    return type.toString().replaceAll("Instance of ", "").replaceAll("'", "") +
+        "s";
   }
 
   //Clear
-  Future<void> clearDatabase() async{
+  Future<void> clearDatabase() async {
     final db = await database;
     db!.delete("Events");
     db.delete("AlarmDatas");
     db.delete("FinanceModels");
   }
 
-  Future<void> clearDatabaseTable<T>(T type) async{
+  Future<void> clearDatabaseTable<T>(T type) async {
     final db = await database;
     db!.delete(getTableNameFromType(type));
   }
 
   //Generic
-  List<T> getModelsList<T>(T type, List<Map<String, Object?>> data){
+  List<T> getModelsList<T>(T type, List<Map<String, Object?>> data) {
     dynamic objectsList;
-    if(type is Event) {
+    if (type is Event) {
       objectsList = data.map((e) => Event.fromMap(e)).toList();
-    } else if(type is AlarmData) {
+    } else if (type is AlarmData) {
       objectsList = data.map((e) => AlarmData.fromMap(e)).toList();
-    } else if(type is FinanceModel) {
+    } else if (type is FinanceModel) {
       objectsList = data.map((e) => FinanceModel.fromMap(e)).toList();
     }
     return objectsList;
   }
 
-  Future<void> deleteModels<T>(T type) async{
+  Future<List<dynamic>> getListById<T>(int id, T type) async {
+    final db = await database;
+    var res = await db!.query(
+      getTableNameFromType(T),
+      where: "eventId = ?",
+      whereArgs: [id],
+    );
+
+    List<T> data = getModelsList<T>(type, res);
+
+    return data;
+  }
+
+  Future<void> deleteModels<T>(T type) async {
     final db = await database;
     db!.delete(getTableNameFromType(type));
   }
 
-  Future<void> deleteModelById(int? id, String collectionName) async{
+  Future<void> deleteModelById(int? id, String collectionName) async {
     final db = await database;
-    db!.delete(
-        collectionName,
-        where: "id = ?",
-        whereArgs: [id]
-    );
+    db!.delete(collectionName, where: "id = ?", whereArgs: [id]);
   }
 
-  Future<T> getModelById<T>(int id, type) async{
+  Future<T> getModelById<T>(int id, type) async {
     final db = await database;
     var res = await db!.query(
       getTableNameFromType(type),
@@ -111,7 +120,7 @@ class DBProvider {
     return data.first;
   }
 
-  Future<List<T>> getModels<T>(type) async{
+  Future<List<T>> getModels<T>(type) async {
     final db = await database;
     var res = await db!.query(
       getTableNameFromType(type),
@@ -120,7 +129,7 @@ class DBProvider {
     return data;
   }
 
-  Future<T> upsertModel<T>(dynamic model) async{
+  Future<T> upsertModel<T>(dynamic model) async {
     final db = await database;
     if (model.id == null) {
       model.id = await db!.insert(

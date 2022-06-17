@@ -4,8 +4,10 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:everyday/pages/homepage.dart';
 import 'package:everyday/views/alarmview.dart';
 import 'package:everyday/views/countdowns.dart';
+import 'package:everyday/views/financemodelview.dart';
 import 'package:everyday/views/pagesview.dart';
 import 'package:everyday/views/preferenceview.dart';
+import 'package:everyday/views/usagestatisticview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,22 +23,26 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
-  var prefs = await SharedPreferences.getInstance();
-  var list = prefs.getStringList("ids");
-  if (list == null) {
-    prefs.setStringList("ids", []);
-  }
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+    var prefs = await SharedPreferences.getInstance();
+    var list = prefs.getStringList("ids");
+    if (list == null) {
+      prefs.setStringList("ids", []);
+    }
 
-  await PreferenceView.init(flutterLocalNotificationsPlugin);
-  final String currentTimeZone =
-      await tz.FlutterNativeTimezone.getLocalTimezone();
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('logo');
-  InitializationSettings initializationSettings = const InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await PreferenceView.init(flutterLocalNotificationsPlugin);
+    await UsageStatisticView.init();
+    final String currentTimeZone =
+        await tz.FlutterNativeTimezone.getLocalTimezone();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('logo');
+    InitializationSettings initializationSettings =
+        const InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
 
   initApp();
 }
@@ -56,6 +62,12 @@ void initApp() async {
         ),
         ChangeNotifierProvider<CountdownsView>(
           create: (_) => CountdownsView(),
+        ),
+        ChangeNotifierProvider<UsageStatisticView>(
+          create: (_) => UsageStatisticView(),
+        ),
+        ChangeNotifierProvider<FinanceModelView>(
+          create: (_) => FinanceModelView(),
         ),
       ],
       child: const MyApp(),
@@ -78,6 +90,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizerUtil.setScreenSize(constraints, orientation);

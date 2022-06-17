@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         break;
       case "Organizer":
         {
-          title = "Органайзер";
+          title = "Події";
           pageName = "Organizer";
         }
         break;

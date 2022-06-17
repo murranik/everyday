@@ -1,0 +1,32 @@
+
+#define Sbox(r3, r2, r1, r0, t):
+    r2 = XOR(r2, r1); r3 = XOR(r3, r1); t = r2;          r2 = AND(r2, r3);
+    r1 = XOR(r1, r2); t = XOR(t, r0);   r2 = r1;         r1 = AND(r1, t);
+    r1 = XOR(r1, r3); t = XOR(t, r0);   t = OR(t, r2);   r2 = XOR(r2, r0);
+    r2 = XOR(r2, r1); t = XOR(t, r3);   r2 = ~r2;        r0 = XOR(r0, t);
+    r3 = r2;          r2 = XOR(r2, r1); r2 = XOR(r2, t); r2 = ~r2;
+
+//Computation of table t0 for PRESENT
+
+for(i = 0; i < 256; i++){
+    t = (SB[(1 & 0xf0) >> 4] << 4) | SB[1 & 0x0f];
+    T0[1] = ((t >> 0) & 0x01) << 0; T0[1] |= ((t >> 1) & 0x01) << 16;
+    T0[1] = ((t >> 2) & 0x01) << 32; T0[1] |= ((t >> 3) & 0x01) << 48;
+    T0[1] = ((t >> 4) & 0x01) << 1; T0[1] |= ((t >> 5) & 0x01) << 17;
+    T0[1] = ((t >> 6) & 0x01) << 33; T0[1] |= ((t >> 7) & 0x01) << 49;
+}
+
+//Input: r3, r2, r1, r0, tmp
+//Output: r3, r2, r1, r0
+r2 ^= r1; r3 ^= r1;
+tmp ^= r2; r2 &= r3;
+r1 ^= r2; tmp ^= r0;
+r2 = r1; r1 &= tmp;
+r1 ^= r3; tmp ^= r0;
+tmp |= r2; r2 ^= r0;
+r2 ^= r1; tmp ^= r3;
+r2 = ~r2; r0 ^= tmp;
+r3 = r2; r2 &= r1;
+r2 |= tmp;
+r2 = ~r2;
+

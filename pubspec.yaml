@@ -65,4 +65,5 @@ flutter:
     - assets/images/compass.png
     - assets/images/compassarrow.png
     - assets/images/stopwatch.png
+    - assets/images/deposit.png
   uses-material-design: true

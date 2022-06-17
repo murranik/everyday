@@ -119,8 +119,10 @@ class _FinanceDialogsState extends State<FinanceDialog> {
                     widget.financeModel.label = labelController.text == ""
                         ? null
                         : labelController.text;
+
                     var res =
                         await DBProvider.db.upsertModel(widget.financeModel);
+
                     widget.update!(res, toDelete: false);
                     Navigator.of(context).pop();
                   } else {
